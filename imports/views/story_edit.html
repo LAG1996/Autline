@@ -1,0 +1,199 @@
+<template name = "story_edit">
+
+	<div class = "container-fluid" id = "story_edit">
+		<div class = "row">
+			<div class = "col-3">
+				{{> side_bar}}
+			</div>
+			<div class = "col">
+				<h3>{{title}}</h3>
+				{{> entity_editor}}
+			</div>
+		</div>
+	</div>
+
+	{{> create_entity_modal }}
+	{{> edit_entity_modal }}
+
+</template>
+
+<!--
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+Components of the story edit page
+!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+-->
+<template name = "side_bar">
+
+	<div id = "sidebar">
+		<!--Title poriton-->
+	    <nav class="nav flex-column">
+	      <h3>Story Title</h3>
+
+	      <!--Collapsible menu No. 1-->
+	      <div class = "list-group">
+	        <a href = "#settings_entities" id = "setting_toggle" class = "list-group-item" data-toggle="collapse" aria-expanded = "false" aria-controls = "settings_entities">Setting</a>
+	      </div>
+	        <div class = "collapse" id = "settings_entities">
+	          <div class = "row ml-3"><a href="#" id = "locations" class = "entity_type_switch">Locations</a></div>
+	          <div class = "row ml-3"><a href="#" id = "factions" class = "entity_type_switch">Factions and Races</a></div>
+	          <div class = "row ml-3"><a href="#" id = "items" class = "entity_type_switch">Items</a></div>
+	          <div class = "row ml-3"><a href="#" id = "concepts" class = "entity_type_switch">Rules and Concepts</a></div>
+	        </div>
+	    </nav>
+
+	   	<!--Collapsible menu No. 2-->
+	    <nav class="nav flex-column">
+	      <div class = "list-group">
+	        <a href = "#character_entities" id = "character_toggle" class = "list-group-item" data-toggle="collapse" aria-expanded = "false" aria-controls = "character_entities">Characters</a>
+	      </div>
+	      <div class = "collapse" id = "character_entities">
+	          <div class = "row ml-3"><a href="#" id = "characters" class = "entity_type_switch">Characters</a></div>
+	      </div>
+	    </nav>
+
+		<!--Collapsible menu No. 3-->
+	    <nav class="nav flex-column">
+	      <div class = "list-group">
+	        <a href = "#plot_entities" id = "plot_toggle" class = "list-group-item" data-toggle="collapse" aria-expanded = "false" aria-controls = "plot_entities">Plot</a>
+	      </div>
+	      <div class = "collapse" id = "plot_entities">
+	          <div class = "row ml-3"><a href="#" id = "events" class = "entity_type_switch">Events</a></div>
+	      </div>
+	    </nav>
+	</div>
+
+</template>
+
+<template name = "entity_editor">
+
+	<div class = "row mr-5">
+		<div class = "col">
+			<button class = "btn btn-outline-primary mb-3" data-toggle="modal" data-target="#create_entity_modal">Create</button>
+			{{> entity_list }}
+		</div>
+		<div class = "col mt-5">
+			{{> entity_card }}
+		</div>
+	</div>
+
+
+</template>
+
+<template name = "entity_list">
+	<ul class = "list-group">
+		{{> entity_list_element }}
+		{{> entity_list_element }}
+		{{> entity_list_element }}
+		{{> entity_list_element }}
+		{{> entity_list_element }}
+	</ul>
+</template>
+
+<!--START ENTITY LIST ELEMENT-->
+<template name = "entity_list_element">
+	<a href = "#" class = "list-group-item">Some entity's name</a>
+</template>
+<!--END ENTITY LIST ELEMENT-->
+
+<template name = "entity_card">
+
+	<h1 class = "text-center">Entity Name</h1>
+	<div class = "row">
+		<div class = "col">
+			<button class = "btn btn-outline-success open-modal-btn float-right"  data-toggle="modal" data-target="#edit_entity_modal" id = "edit_entity_btn">Edit</button>
+		</div>
+		<div class = "col">
+			<button class = "btn btn-outline-danger" id = "delete_entity_btn">Delete</button>
+		</div>
+	</div>
+
+	<div class = "row">
+		{{> entity_card_toolbar }}
+	</div>
+</template>
+
+<!--START TOOLBAR FOR ENTITY INFO CARD-->
+<template name = "entity_card_toolbar">
+	<ul class="nav nav-tabs">
+
+	{{#each tabs}}	
+		{{> entity_card_tab}}
+	{{/each}}
+	</ul>
+	
+</template>
+
+<template name = "entity_card_tab">
+	<li class = "nav-item border border border-light entity_tab">
+		<a class = "nav-link entity_tab_link" href="#" id = "{{type}}" aria-selected = "false">{{label}}</a>
+	</li>
+</template>
+<!--END TOOLBAR FOR ENTITY INFO CARD-->
+
+<template name = "create_entity_modal">
+
+	<div class="modal fade" id="create_entity_modal" tabindex="-1" role="dialog" aria-labelledby="create_entity_modal_label" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="add_entity_modal_label">Create an Entity</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<form>
+	      	<div class = "form-group">
+				<label for="create_entity_name_input">Name:</label>
+				<input class = "form-control" id = "create_entity_name_input" type = "text" placeholder = "Entity Name">
+			</div>
+			<div class = "form-group">
+				<label for="create_event_time_input">Time:</label>
+				<input class = "form-control" id = "create_event_time_input" type = "text" placeholder = "Time, for Events Only!">
+			</div>
+			</form>
+	        {{> entity_card_toolbar}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-outline-primary">Create</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+</template>
+
+<template name = "edit_entity_modal">
+
+	<div class="modal fade" id="edit_entity_modal" tabindex="-1" role="dialog" aria-labelledby="edit_entity_modal_label" aria-hidden="true">
+	  <div class="modal-dialog modal-lg" role="document">
+	    <div class="modal-content">
+	      <div class="modal-header">
+	        <h5 class="modal-title" id="edit_entity_modal_label">Edit Entity Title</h5>
+	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+	          <span aria-hidden="true">&times;</span>
+	        </button>
+	      </div>
+	      <div class="modal-body">
+	      	<form>
+			<div class = "form-group">
+				<label for="create_entity_name_input">Name:</label>
+				<input class = "form-control" id = "create_entity_name_input" type = "text" placeholder = "Entity Name">
+			</div>
+			<div class = "form-group">
+				<label for="create_event_time_input">Time:</label>
+				<input class = "form-control" id = "create_event_time_input" type = "text" placeholder = "Time, for Events Only!">
+			</div>
+			</form>
+	        {{> entity_card_toolbar}}
+	      </div>
+	      <div class="modal-footer">
+	        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
+	        <button type="button" class="btn btn-outline-primary">Save changes</button>
+	      </div>
+	    </div>
+	  </div>
+	</div>
+
+</template>

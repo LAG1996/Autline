@@ -1,22 +1,13 @@
 import { Template } from 'meteor/templating';
 import { ReactiveVar } from 'meteor/reactive-var';
 
+//Import the main page
 import './main.html';
 
-Template.hello.onCreated(function helloOnCreated() {
-  // counter starts at 0
-  this.counter = new ReactiveVar(0);
-});
+//Import the splash page controller
+import "../imports/views/views_controllers/splash_page_control.js"
+//Import the story edit page controller
+import "../imports/views/views_controllers/story_edit_control.js"
 
-Template.hello.helpers({
-  counter() {
-    return Template.instance().counter.get();
-  },
-});
 
-Template.hello.events({
-  'click button'(event, instance) {
-    // increment the counter when button is clicked
-    instance.counter.set(instance.counter.get() + 1);
-  },
-});
+import '../imports/api/routes.js'
