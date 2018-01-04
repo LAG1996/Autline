@@ -7,7 +7,9 @@
 			</div>
 			<div class = "col">
 				<h3>{{title}}</h3>
-				{{> entity_editor}}
+				{{ #if type_selected }}
+					{{> entity_editor}}
+				{{/if}}			
 			</div>
 		</div>
 	</div>
@@ -107,25 +109,27 @@ Components of the story edit page
 		</div>
 	</div>
 
-	<div class = "row">
-		{{> entity_card_toolbar }}
-	</div>
+	{{> entity_toolbar}}
+
+	<h3>{{ selected_tab_label }}</h3>
+
 </template>
 
 <!--START TOOLBAR FOR ENTITY INFO CARD-->
-<template name = "entity_card_toolbar">
+<template name = "entity_toolbar">
 	<ul class="nav nav-tabs">
 
 	{{#each tabs}}	
-		{{> entity_card_tab}}
+		{{> entity_tab}}
 	{{/each}}
+
 	</ul>
 	
 </template>
 
-<template name = "entity_card_tab">
+<template name = "entity_tab">
 	<li class = "nav-item border border border-light entity_tab">
-		<a class = "nav-link entity_tab_link" href="#" id = "{{type}}" aria-selected = "false">{{label}}</a>
+		<a class = "nav-link entity_tab_link" href="#" id = "{{id}}" aria-selected = "false">{{label}}</a>
 	</li>
 </template>
 <!--END TOOLBAR FOR ENTITY INFO CARD-->
@@ -152,7 +156,8 @@ Components of the story edit page
 				<input class = "form-control" id = "create_event_time_input" type = "text" placeholder = "Time, for Events Only!">
 			</div>
 			</form>
-	        {{> entity_card_toolbar}}
+	        {{> m_entity_toolbar}}
+	        <h3>{{ selected_tab_label }}</h3>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
@@ -186,7 +191,8 @@ Components of the story edit page
 				<input class = "form-control" id = "create_event_time_input" type = "text" placeholder = "Time, for Events Only!">
 			</div>
 			</form>
-	        {{> entity_card_toolbar}}
+	        {{> m_entity_toolbar }}
+	    	<h3>{{ selected_tab_label }}</h3>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
@@ -196,4 +202,21 @@ Components of the story edit page
 	  </div>
 	</div>
 
+</template>
+
+<template name = "m_entity_toolbar">
+	<ul class="nav nav-tabs">
+
+	{{#each tabs}}	
+		{{> m_entity_tab }}
+	{{/each}}
+
+	</ul>
+	
+</template>
+
+<template name = "m_entity_tab">
+	<li class = "nav-item border border border-light entity_tab">
+		<a class = "nav-link m_entity_tab_link" href="#" id = "{{id}}" aria-selected = "false">{{label}}</a>
+	</li>
 </template>

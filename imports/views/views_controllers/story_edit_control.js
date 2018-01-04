@@ -153,6 +153,16 @@ var entityType2Tabs = {
 	]
 }
 
+//Automatically attach ids to each tab
+for(let key in entityType2Tabs)
+{
+	let id = 0
+	for(let t in entityType2Tabs[key])
+	{
+		entityType2Tabs[key][t].id = id++
+	}
+}
+
 /*/////////////////////////////
 * BEGIN
 *	ENTITY EDITOR CONFIG
@@ -161,24 +171,42 @@ var entityType2Tabs = {
 //First, set some global helper functions
 
 //Helper function for getting the tabs for an entity card
-var tabs_dict = new ReactiveDict()
-tabs_dict.set('tabs', null)
-Template.registerHelper("tabs", function(){
+var global_helper_variables = new ReactiveDict()
+global_helper_variables.set('tabs', null) //Reactive variable that stores general tab data. Edited when the user switches an entity
+global_helper_variables.set('modal tab data', null) //Reactive variable that stores data for the tab selected on the modal. Edited 
+global_helper_variables.set('card tab data', null) //Reactive variable that stores data for the tab selected on the entity card
 
-	console.log(tabs_dict.get('tabs'))
-	return tabs_dict.get('tabs')
+var global_flags = new ReactiveDict()
+global_flags.set("selected_entity_type", false)
 
-})
-
+//Create a dictionary for the story editor
 Template.story_edit.onCreated(function(){
 	this.dict = new ReactiveDict()
+
+	//Set a key for the title that will appear at the top
 	this.dict.set('title', '')
+})
+
+Template.entity_toolbar.helpers({
+	tabs: function(){ return global_helper_variables.get('tabs') } //Return a reactive variable that contains tab data
+})
+
+Template.entity_toolbar.events({
+
+	"click .entity_tab_link"(event){
+		global_helper_variables.set("card tab data", global_helper_variables.get("tabs")[event.target.id] )}
+
 })
 
 Template.story_edit.helpers({
 	title: function(){
-		console.log("y")
+		//Return a reactive variable that contains the title
 		return Template.instance().dict.get('title')
+	},
+
+	type_selected: function(){
+
+		return global_flags.get("selected_entity_type")
 	}
 })
 
@@ -186,10 +214,17 @@ Template.story_edit.events({
 	//Set events for clicking links on the sidebar
 	"click .entity_type_switch"(event){
 
+		//Set the editor state
 		EditEditorState(event.target.id, false, null)
 
-		Template.instance().dict.set('title', entityType2TopMessage[editorState.entity_type].title)
-		tabs_dict.set('tabs', entityType2Tabs[editorState.entity_type])
+		Template.instance().dict.set('title', entityType2TopMessage[event.target.id].title)
+
+
+		//Set the general tab data
+		global_helper_variables.set('tabs', entityType2Tabs[event.target.id])
+
+		//Set
+		global_flags.set('selected_entity_type', true)
 	}
 })
 
@@ -211,8 +246,53 @@ function EditEditorState(entity_type, card_visible, tab_type_selected){
 * SECTION
 */////////////////////////////
 
+Template.entity_card.helpers({
+
+	"selected_tab_label": function(){ 
+		if(global_helper_variables.get("card tab data")){return global_helper_variables.get("card tab data").label} }
+
+})
+
 /*/////////////////////////////
 * END
 *	ENTITY CARD CONFIG
 * SECTION
 */////////////////////////////
+
+/*///////////////////////////
+* BEGIN
+*	ENTITY MODAL CONFIG
+* SECTION
+*///////////////////////////
+var modal_on = false
+
+Template.m_entity_toolbar.helpers({
+
+	tabs: function(){ return global_helper_variables.get('tabs') }
+
+})
+
+Template.m_entity_toolbar.events({
+	"click .m_entity_tab_link"(events){ 
+		global_helper_variables.set("modal tab data", global_helper_variables.get("tabs")[event.target.id] ) }
+})
+
+Template.create_entity_modal.helpers({
+
+	"selected_tab_label": function(){ 
+		if(global_helper_variables.get("modal tab data")){return global_helper_variables.get("modal tab data").label} }
+
+})
+
+Template.edit_entity_modal.helpers({
+
+	"selected_tab_label": function(){ 
+		if(global_helper_variables.get("modal tab data")){return global_helper_variables.get("modal tab data").label} }
+
+})
+
+/*///////////////////////////
+* END
+*	ENTITY MODAL CONFIG
+* SECTION
+*///////////////////////////
