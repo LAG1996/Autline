@@ -1,6 +1,10 @@
-<template name = "story_edit">
+<!--
+	The main component of our application.
+-->
 
-	<div class = "container-fluid" id = "story_edit">
+<template name = "story_edit_root">
+
+	<div class = "container-fluid" id = "story_edit_root">
 		<div class = "row">
 			<div class = "col-3">
 				{{> side_bar}}
@@ -140,7 +144,7 @@ Components of the story edit page
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="add_entity_modal_label">Create an Entity</h5>
+	        <h5 class="modal-title" id="add_entity_modal_label">Create</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -151,17 +155,22 @@ Components of the story edit page
 				<label for="create_entity_name_input">Name:</label>
 				<input class = "form-control" id = "create_entity_name_input" type = "text" placeholder = "Entity Name">
 			</div>
+<!--
+			{{#if event}}
 			<div class = "form-group">
 				<label for="create_event_time_input">Time:</label>
 				<input class = "form-control" id = "create_event_time_input" type = "text" placeholder = "Time, for Events Only!">
 			</div>
+			{{/if}}
+-->
+
 			</form>
 	        {{> m_entity_toolbar}}
 	        <h3>{{ selected_tab_label }}</h3>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-outline-primary">Create</button>
+	        <button type="button" class="btn btn-outline-primary" id = "create-btn">Create</button>
 	      </div>
 	    </div>
 	  </div>
@@ -175,7 +184,7 @@ Components of the story edit page
 	  <div class="modal-dialog modal-lg" role="document">
 	    <div class="modal-content">
 	      <div class="modal-header">
-	        <h5 class="modal-title" id="edit_entity_modal_label">Edit Entity Title</h5>
+	        <h5 class="modal-title" id="edit_entity_modal_label">Edit</h5>
 	        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
 	          <span aria-hidden="true">&times;</span>
 	        </button>
@@ -186,17 +195,22 @@ Components of the story edit page
 				<label for="create_entity_name_input">Name:</label>
 				<input class = "form-control" id = "create_entity_name_input" type = "text" placeholder = "Entity Name">
 			</div>
+			<!--
+			{{#if event}}
 			<div class = "form-group">
 				<label for="create_event_time_input">Time:</label>
 				<input class = "form-control" id = "create_event_time_input" type = "text" placeholder = "Time, for Events Only!">
 			</div>
+			{{/if}}
+		-->
+
 			</form>
 	        {{> m_entity_toolbar }}
 	    	<h3>{{ selected_tab_label }}</h3>
 	      </div>
 	      <div class="modal-footer">
 	        <button type="button" class="btn btn-outline-secondary" data-dismiss="modal">Close</button>
-	        <button type="button" class="btn btn-outline-primary">Save changes</button>
+	        <button type="button" class="btn btn-outline-primary" id = "edit-btn">Save changes</button>
 	      </div>
 	    </div>
 	  </div>

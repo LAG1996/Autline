@@ -8,6 +8,6 @@ FlowRouter.route('/', {
 FlowRouter.route("/views/story_edit.html", {
 	name: "story_edit",
 	action(){
-		BlazeLayout.render("show_page", {main: "story_edit"})
+		BlazeLayout.render("show_page", {main: "story_edit_root"})
 	}
 })

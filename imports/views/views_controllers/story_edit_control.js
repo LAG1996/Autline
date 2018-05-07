@@ -9,7 +9,10 @@ import "../story_edit.html"
 //-the type of entity the user is currently looking at
 //-the whether the entity card is visible or not (i.e., the user picked an entity to edit)
 //-what tab on the entity card is selected (could be none in the case where the user only picked an entity, but has not picked a tab)
-var editorState = {entity_type: null, card_visible: false, tab_type_selected: null}
+var EditorState = new ReactiveDict()
+EditorState.set("entity_type", null)
+EditorState.set("is_card_visible", false)
+EditorState.set("is_tab_type_selected", false)
 
 //Make a mapping from the types of entities to functions that do the following:
 //-Change the message at the top of the screen
@@ -177,10 +180,10 @@ global_helper_variables.set('modal tab data', null) //Reactive variable that sto
 global_helper_variables.set('card tab data', null) //Reactive variable that stores data for the tab selected on the entity card
 
 var global_flags = new ReactiveDict()
-global_flags.set("selected_entity_type", false)
+global_flags.set("isEntityTypeSelected", false)
 
 //Create a dictionary for the story editor
-Template.story_edit.onCreated(function(){
+Template.story_edit_root.onCreated(function(){
 	this.dict = new ReactiveDict()
 
 	//Set a key for the title that will appear at the top
@@ -198,7 +201,7 @@ Template.entity_toolbar.events({
 
 })
 
-Template.story_edit.helpers({
+Template.story_edit_root.helpers({
 	title: function(){
 		//Return a reactive variable that contains the title
 		return Template.instance().dict.get('title')
@@ -206,11 +209,11 @@ Template.story_edit.helpers({
 
 	type_selected: function(){
 
-		return global_flags.get("selected_entity_type")
+		return global_flags.get("isEntityTypeSelected")
 	}
 })
 
-Template.story_edit.events({
+Template.story_edit_root.events({
 	//Set events for clicking links on the sidebar
 	"click .entity_type_switch"(event){
 
@@ -224,15 +227,15 @@ Template.story_edit.events({
 		global_helper_variables.set('tabs', entityType2Tabs[event.target.id])
 
 		//Set
-		global_flags.set('selected_entity_type', true)
+		global_flags.set('isEntityTypeSelected', true)
 	}
 })
 
 
 function EditEditorState(entity_type, card_visible, tab_type_selected){
-	editorState.entity_type = entity_type
-	editorState.card_visible = card_visible
-	editorState.tab_type_selected = tab_type_selected
+	EditorState.set("entity_type", entity_type);
+	EditorState.set("is_card_visible", card_visible);
+	EditorState.set("is_tab_type_selected", tab_type_selected)
 }
 /*/////////////////////////////
 * END
@@ -268,28 +271,78 @@ var modal_on = false
 
 Template.m_entity_toolbar.helpers({
 
-	tabs: function(){ return global_helper_variables.get('tabs') }
+	tabs: function(){ return global_helper_variables.get('tabs'); }
 
 })
 
 Template.m_entity_toolbar.events({
 	"click .m_entity_tab_link"(events){ 
-		global_helper_variables.set("modal tab data", global_helper_variables.get("tabs")[event.target.id] ) }
+		global_helper_variables.set("modal tab data", global_helper_variables.get("tabs")[event.target.id]); }
 })
+
+
 
 Template.create_entity_modal.helpers({
 
 	"selected_tab_label": function(){ 
-		if(global_helper_variables.get("modal tab data")){return global_helper_variables.get("modal tab data").label} }
+		if( global_helper_variables.get("modal tab data") ){ 
+			return global_helper_variables.get("modal tab data").label; 
+		}
+	},
+
+	"event": function(){
+		EditorState.get("entity_type") == "events";
+	}
+})
+
+Template.create_entity_modal.events({
+
+	"click #create-btn": function(){
+
+		console.log("Create entity of type " + EditorState.get("entity_type"))
+
+	}
 
 })
 
 Template.edit_entity_modal.helpers({
 
 	"selected_tab_label": function(){ 
-		if(global_helper_variables.get("modal tab data")){return global_helper_variables.get("modal tab data").label} }
+		if( global_helper_variables.get("modal tab data") ){ 
+			return global_helper_variables.get("modal tab data").label; 
+		}
+	},
+	
+	"event": function(){
+		console.log(EditorState.get("entity_type"))
+		console.log(EditorState.get("entity_type") == "events")
+		EditorState.get("entity_type") == "events";
+	}
+})
+
+Template.edit_entity_modal.events({
+
+	"click #edit-btn": function(){
+
+		console.log("Edit entity of type " + EditorState.get("entity_type"))
+
+	}
 
 })
+
+function getSelectedTabLabel(){
+
+	if( global_helper_variables.get("modal tab data") ){ 
+		return global_helper_variables.get("modal tab data").label; 
+	}
+
+	return "";
+}
+
+function isEvent(){
+
+	return EditorState.get("entity_type") == "events";
+}
 
 /*///////////////////////////
 * END
