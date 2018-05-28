@@ -26,4 +26,4 @@ I'm using the Meteor package. In particular, I'm using
 ## Does it work?
 
 **Autline** isn't in a working state just yet, as I'm still planning out its architecture. Right now, it's just a mock-up.
-However, you can check out [Hero Letter](https://heroletter.herokuapp.com/views/story_editor.html#) to get an idea of its basic functionality. As usual with these solo prototypes, you can expect some bugs. It works *mostly* well :)
+However, you can check out the old [app](https://heroletter.herokuapp.com/views/story_editor.html#) to get an idea of its basic functionality. As usual with these solo prototypes, you can expect some bugs. It works *mostly* well :)
