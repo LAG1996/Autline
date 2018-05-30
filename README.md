@@ -18,7 +18,7 @@ reactive JavaScript frameworks, so it's easy to use.
 I'm using the Meteor package. In particular, I'm using
 
 - JavaScript
-- BlazeJS
+- BlazeJS (Soon to be AngularJS)
 - MongoDB
 - HTML
 - CSS ([Bootstrap](https://getbootstrap.com/))
