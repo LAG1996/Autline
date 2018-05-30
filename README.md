@@ -18,12 +18,14 @@ reactive JavaScript frameworks, so it's easy to use.
 I'm using the Meteor package. In particular, I'm using
 
 - JavaScript
-- AngularJS
+- BlazeJS
 - MongoDB
 - HTML
 - CSS ([Bootstrap](https://getbootstrap.com/))
 
+I'm also using some miscellaneous packages provided by Meteor to handle routing and such.
+
 ## Does it work?
 
-**Autline** isn't in a working state just yet, as I'm still planning out its architecture. Right now, it's just a mock-up.
+*Autline* isn't in a working state just yet, as I'm still planning out its architecture. Right now, it's just a mock-up so that I can figure out what goes where.
 However, you can check out the old [app](https://heroletter.herokuapp.com/views/story_editor.html#) to get an idea of its basic functionality. As usual with these solo prototypes, you can expect some bugs. It works *mostly* well :)
