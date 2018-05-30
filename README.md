@@ -7,11 +7,9 @@ Welcome to the repository for Autline, formally called [Hero Letter](https://git
 Autline is an AUTomatic outLINE tool meant to help authors plan out their creative pieces. The idea is to work with the spontaneity
 involved in the writing process. From my experience in writing, it is very easy to make up entities in a story while defining a
 separate entity. For example, say you're making up an event in your plot and then create a character involved in that event. You
-may not have defined that character before. What if you forget to give that character definition because you'd rather make sure
-you're on the ball while planning out the event?
+may not have defined that character before. What if you forget to give that character definition because you'd rather focus on the story first?
 
-Autline will automatically create a card for that character for you once you save your event. On top of that, it's made with
-reactive JavaScript frameworks, so it's easy to use.
+Autline will automatically create a card for that character for you once you save your event.
 
 ## What's *in* it?
 
