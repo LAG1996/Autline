@@ -15,8 +15,8 @@ Autline will automatically create a card for that character for you once you sav
 
 I'm using the Meteor package. In particular, I'm using
 
-- JavaScript
-- BlazeJS (Soon to be ReactJS)
+- JavaScript (TypeScript)
+- ReactJS
 - MongoDB
 - HTML
 - CSS ([Bootstrap](https://getbootstrap.com/))
