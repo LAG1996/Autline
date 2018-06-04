@@ -34,8 +34,7 @@ export default class Splash extends Component {
 				{/*Will add a button that takes us straight to the story editor page
 				for the case where the user is already logged in.*/}
 				<Button bsStyle = "primary" onClick = {this.handleLogin}>Log In</Button>
-
-
+			
 			</div>
 		);
 	}

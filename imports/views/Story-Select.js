@@ -32,18 +32,13 @@ export default class StorySelect extends Component{
 
 
 				<TopNav/>
-					
+				
+				{/* Will need to add in the story names and descriptions as props */}
 				<Grid>
 					<Row>
-						<Col md = {4} onClick={this.goToStory}>
-							<StoryPanel/>
-						</Col>
-						<Col md = {4}>
-							<StoryPanel/>
-						</Col>
-						<Col md = {4}>
-							<StoryPanel/>
-						</Col>
+						<StoryPanel handler = {this.goToStory}/>
+						<StoryPanel/>
+						<StoryPanel/>
 					</Row>
 				</Grid>
 			</div>
