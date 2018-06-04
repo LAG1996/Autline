@@ -27,3 +27,4 @@ I'm also using some miscellaneous packages provided by Meteor to handle routing 
 
 *Autline* isn't in a working state just yet, as I'm still planning out its architecture. Right now, it's just a mock-up so that I can figure out what goes where.
 However, you can check out the old [app](https://heroletter.herokuapp.com/views/story_editor.html#) to get an idea of its basic functionality. As usual with these solo prototypes, you can expect some bugs. It works *mostly* well :)
+The way Autline will function will be quite different, but I think you'll get the idea from playing with Hero Letter.
