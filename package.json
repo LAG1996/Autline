@@ -6,12 +6,16 @@
   },
   "dependencies": {
     "babel-runtime": "^6.26.0",
+    "draft-js": "^0.10.5",
     "history": "^4.7.2",
+    "immutable": "^3.8.2",
     "meteor-node-stubs": "^0.3.2",
     "react": "^16.4.0",
     "react-bootstrap": "^0.32.1",
     "react-contenteditable": "^2.1.0",
     "react-dom": "^16.4.0",
-    "react-router": "^4.2.0"
+    "react-router": "^4.2.0",
+    "slate": "^0.33.6",
+    "slate-react": "^0.12.6"
   }
 }

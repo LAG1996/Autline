@@ -19,6 +19,13 @@ import Associations from './Associations.js';
 //import editable React component
 import ContentEditable from 'react-contenteditable';
 
+//import SlateJS
+import { Editor } from 'slate-react';
+import { Value } from 'slate';
+
+//import CSS
+import '/imports/views/style/entity-card-textbox.css';
+
 
 /*
 	`EntityCard` COMPONENT - Represents the section of the story editor playground where the user can
@@ -103,7 +110,7 @@ export default class EntityCard extends Component{
 								<Tab eventKey = {1} title="Description">
 									<Panel>
 										<Panel.Body>
-											<DescriptionTextBox text = {this.state.descriptionHTML}/>
+											<DescriptionTextBox HTML = {this.state.descriptionHTML}/>
 										</Panel.Body>
 									</Panel>
 								</Tab>
@@ -139,147 +146,88 @@ export default class EntityCard extends Component{
 	}
 }
 
+const initialValue = Value.fromJSON({
+  document: {
+    nodes: [
+      {
+        object: 'block',
+        type: 'paragraph',
+        nodes: [
+          {
+            object: 'text',
+            leaves: [
+              {
+                text: 'A line of text in a paragraph.',
+              },
+            ],
+          },
+        ],
+      },
+    ],
+  },
+})
+
+//DescriptionTextBox Component - represents the textbox in the description tag
+//of an entity card. The textbox responds to a simple markup language that works as
+//follows:
+/*
+	*Any text between '{' and '}' is a link to another entity.
+	*That link 'zone' should be formatted as follows:
+		* '{' and '}' are bolded
+		* The text in between them should be made a different color from the
+			rest of the text.
+*/
+//There is a save button under the text box that shows up whenever the user starts editing. Upon saving,
+//the text should be replaced with some clean HTML code with links that the user can use to navigate
+//their outline.
+function EntityBlock(props){
+	return (
+			<span {...props.attributes}><strong>{"{"}</strong>{props.children}<strong>{"}"}</strong></span>
+	)
+}
+
+
 class DescriptionTextBox extends Component {
 	constructor(props, context){
 		super(props, context);
 
 		this.state = {
-			textChanged: false,
-			intervalIndex: 0,
-			lastKey: null,
-			innerHTML: this.props.text
+			value: initialValue
 		}
 
-		this.handleKeyDown = this.handleKeyDown.bind(this);
-		this.parseString = this.parseString.bind(this);
+		this.handleChange = this.handleChange.bind(this);
+		//this.handleKey = this.handleKey.bind(this);
 	}
 
-	componentDidMount(){
-		console.log("Start watching the text box");
-
-		let parseString = this.parseString.bind(this);
-
-		let getIfTextChanged = () => {return this.state.textChanged;}
-		getIfTextChanged = getIfTextChanged.bind(this);
-		
-		let setTextChangedFalse = () => {return this.setState(() => ({textChanged: false}))}
-		setTextChangedFalse = setTextChangedFalse.bind(this);
-
-		let index = setInterval(() => {
-
-			if(getIfTextChanged()){
-				//Decide if string parsing is even necessary
-				parseString();
-
-				setTextChangedFalse();
-			}
-		}, 10)
-
-		console.log("Begin interval number " + index);
-
-		this.setState({intervalIndex: index});
+	handleChange({ value }){
+		this.setState({value})
 	}
 
-	componentWillUnmount(){
-		console.log("Canceling interval number " + this.state.intervalIndex);
-		console.log("Stop watching the text box");
-		clearInterval(this.state.intervalIndex);
-	}
+	handleKey(event, change){
+		if(event.ctrlKey){
+			event.preventDefault();
 
-	parseString(){
-		console.log("Doing some string parsing");
-
-		console.log("Last key typed: " + this.state.lastKey)
-
-		//
-	}
-
-	handleKeyDown(evt){
-		//parseString(evt);
-/*
-		let _goLinkMode = this.state.linkMode;
-		let _doToggleBold = this.state.doToggleBold;
-		let _doToggleUnderline = this.state.doToggleUnderline;
-
-		let key = evt.key;
-
-		console.log("Key: " + evt.key);
-
-		if(_goLinkMode)
-		{
-
-			document.execCommand('styleWithCSS', false, true);
-			document.execCommand('forecolor', false, "#39b7cd");
-
-			if(_doToggleUnderline){
-				document.execCommand('underline', false);
-			}
-
-			_doToggleUnderline = false;
+			change.toggleMark(inEntityBlock ? 'paragraph': 'entity');
+			return true;
 		}
-
-		if(_doToggleBold)
-		{
-			console.log("Toggling off bold");
-			document.execCommand('styleWithCSS', false, true);
-			document.execCommand('bold', false, false);
-
-			_doToggleBold = false;
-		}
-
-		if(key === "{" || key === "}")
-		{
-			document.execCommand('styleWithCSS', false, true);
-			document.execCommand('bold', false, true);
-			_doToggleBold = true;
-
-			if(key === "{")
-			{
-				_goLinkMode = true;
-				_doToggleUnderline = true;
-			}
-			else if(key === "}" && _goLinkMode)
-			{
-				_goLinkMode = false;
-				document.execCommand('styleWithCSS', false, true);
-				document.execCommand('forecolor', false, "#000000");
-				document.execCommand('underline', false);
-			}
-		}
-
-		//console.log("Target: ");
-		//console.log(evt.target);
-		console.log("Text: " + evt.target.textContent);
-		console.log("InnerHTML: \n" + evt.target.innerHTML);
-
-		this.setState(() => ({linkMode: _goLinkMode, doToggleBold: _doToggleBold, doToggleUnderline: _doToggleUnderline}));
-
-		handleTextDelete = () => {
-
-		}
-
-		handleTextWrite = () => {
-
-		}
-		*/
-
-		//Capture the text.
-		let key = evt.key;
-		this.setState(() => ({textChanged: true, lastKey: key}));
-	}
-
-
-	//This will parse the text (should be read from a database) and return HTML to show
-	generateHTML = () => {
-		return this.state.text;
 	}
 
 	render(){
 		return (
-			<ContentEditable
-				html = {this.state.innerHTML}
-				disabled = {false}
-				onKeyDown = {this.handleKeyDown}
-			/>)
+				<Editor 
+					value = {this.state.value} 
+					onChange = {this.handleChange} 
+					onKeyDown = {this.handleKey}
+					//renderNode = {this.renderNode}
+				/>
+			)
 	}
+
+/*
+	renderNode(props){
+		switch(props.node.type){
+			case 'entity': return <EntityBlock {...props}/>
+		}
+	}
+*/
 }
